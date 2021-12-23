@@ -1,0 +1,110 @@
+:local{
+  .header{
+    background: rgb(198,47,47) !important;
+    padding:0px 20px !important;
+  }
+
+  .content{
+    background: white !important;
+    height: calc(~'100vh - 64px');
+    overflow-y: scroll;
+  }
+
+  .home{
+    float: left; 
+    color: white !important;
+    font-size: 1.5rem;
+    margin-right:20px;
+    >a{
+      color: white !important;
+    }
+  }
+  
+  .icon-base{
+    font-size: 1.6rem;
+    color:white;
+    display: inline-block;
+    line-height: 64px;
+    height: inherit;
+  }
+
+  .pre{
+    .icon-base;
+    border-right: 1px solid rgb(169, 169, 169);
+    padding-right: 10px;
+    float: left;
+  }
+
+  .search{
+    .icon-base !important;
+    border-left: 1px solid rgb(169, 169, 169)  !important;
+    padding-left: 10px  !important;
+    float: right  !important;
+  }
+
+  .searchInput{
+    width:60%!important;
+    background-color:  white  !important;
+    margin-left: 10px !important;
+    outline: none !important;
+    border: none !important;
+    font-size: 1.2em !important;
+    color: rgba(255, 255, 255, 0)!important ;
+    &:focus{
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+
+  .close{
+    color:  black  !important;
+
+  }
+
+  .noResult{
+    height: 100%;
+    line-height: calc(~'100vh - 64px');
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+
+  .tagBox{
+    padding: 20px 10px;
+
+    h1{
+      font-size: 1.0rem;
+    }
+
+    .tags{
+      padding: 10px 15px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      align-content: flex-start;
+      .tag{
+        opacity: 0.6;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+      }
+    }
+
+    .clear{
+      margin-top: 40px;
+      text-align: center;
+      font-size: 1.0rem;
+    }
+  }
+  
+}
+
+:global{
+  .ant-input-affix-wrapper{
+    width: calc(~'100% - 3.2rem - 40px');
+    .anticon-close-circle{
+      color: white;
+      font-size: 1.1rem;
+    }
+  }
+}
