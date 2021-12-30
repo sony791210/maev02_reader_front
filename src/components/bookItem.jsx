@@ -27,15 +27,18 @@ const BookItem=(props)=>{
   const handleImageErrored=(e)=> {
     e.target.src = errorLoading;
   }
+
+  
   return (
     <Tappable
       onPress ={showConfirm}
     >
+    
       <div className={styles.box}>
-        <img src={props.data.cover} onError={handleImageErrored} />
+        <img src={props.data.cover || `data:image/jpeg;base64, `+props.data.title_photo_url} onError={handleImageErrored} />
         <p>
-          <span>{props.data.title}</span><br/>
-          <span>{props.data.lastChapter}</span>
+          <span>{props.data.title }</span><br/>
+          <span>{props.data.page_title}</span>
         </p>
       </div>
     </Tappable>

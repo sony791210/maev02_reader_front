@@ -26,7 +26,7 @@ const RouteConfig = () => (
     <Route path="/" exact component={index} /> 
     <Route path="/search" exact component={search} />
     <Route path="/bookIntroduce/:id"  component={bookIntroduce} />
-    <Route path="/read/:id" exact component={read} />
+    <Route path="/read/:id/:page" exact component={read} />
 
 
 

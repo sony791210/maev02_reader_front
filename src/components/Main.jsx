@@ -102,14 +102,14 @@ const AppComponent =(props)=> {
             props?.bookList?.list?.length === 0 ?
             (
               <div className={styles.null}>
-                书架空空的！快去添加点书吧！
+                書架空空的！快去添加書籍吧！
               </div>
             )
             : props?.bookList?.list?.map(
                 (item, index) => 
                 <Row  key={index} align="middle" className={styles.row}>
                   <Col xs={20} sm={20} md={20} lg={22} xl={22}>
-                    <Link to={`/read/${index}`} key={index}>
+                    <Link to={`/read/${item.novel_name_id}/1`} key={index}>
                       <BookItem data={item} deleteBook={props.deleteBook} key={index} />
                     </Link>
                   </Col>
@@ -130,7 +130,7 @@ const AppComponent =(props)=> {
             <Modal  footer={null} visible={isModalVisible} width="100%"  style={{ top:"calc(100% - 180px) " }} onCancel={handleCancel} >
               <Row justify="space-between"  align="middle">
                 <Col span={3} xs={4} md={4}>
-                  <img src={footerData.cover} className={styles.img} />
+                  <img src={footerData.cover || `data:image/jpeg;base64, `+footerData.title_photo_url} className={styles.img} />
                 </Col>
                 <Col span={16} xs={12} md={16} className={styles.text} >
                   <span>{footerData.title}</span>
@@ -139,7 +139,7 @@ const AppComponent =(props)=> {
                 </Col>
                 <Col span={5} xs={8} md={4}>
                   
-                  <Link to={`/bookIntroduce/${footerData._id}`}>
+                  <Link to={`/bookIntroduce/${footerData.novel_name_id}`}>
                     <Button>
                       詳情
                     </Button>
