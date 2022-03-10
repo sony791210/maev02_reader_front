@@ -4,26 +4,41 @@ import { Link } from 'react-router-dom';
 
 import  errorLoading from '../images/error.jpg'
 
-class ResultBookItem extends React.Component{
+const ResultBookItem=(props)=>{
 
-  
-  handleImageErrored(e){
+  const handleImageErrored=(e)=>{
     e.target.src = errorLoading;
   }
 
-  render() {
-    return (
-      <Link to={`/bookIntroduce/${this.props.data.novel_name_id}`}>
-      <div className={styles.box}>
-        <img src={`data:image/jpeg;base64, `+this.props.data.title_photo_url} onError={this.handleImageErrored}/>
-        <p>
-          <span>{this.props.data.title}</span><br/>
-          <span>{this.props.data.author}著作 | {this.props.data.cat} | {this.props.data.contentType}</span>
-        </p>
-      </div>
+  console.log(props.data)
+  return(
+    <>
+    
+      <Link to={  (props?.data?.content_type=="text")? `/bookIntroduce/${props.data.novel_name_id}`:`/bookIntroduce/${props.data.novel_name_id}` }>
+        <div className={styles.box}>
+          <img src={`data:image/jpeg;base64, `+props.data.title_photo_url} onError={handleImageErrored}/>
+          <p>
+            <span>{props.data.title}</span><br/>
+            <span>{props.data.author}著作 | {props.data.cat} | {props.data.contentType}</span>
+          </p>
+        </div>
       </Link>
-    )
-  }
+    </>
+  )
 }
+// class ResultBookItem extends React.Component{
+
+  
+//   handleImageErrored(e){
+//     e.target.src = errorLoading;
+//   }
+//   render() {
+//     console.log(this.props)
+
+//     return (
+      
+//     )
+//   }
+// }
 
 export default ResultBookItem;

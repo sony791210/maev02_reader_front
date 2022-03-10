@@ -61,8 +61,8 @@ class BookIntroduce extends React.Component{
       let list = nextProps.bookList.list
       for (let index in list) {
         if (list[index].novel_name_id === nextProps.fetchBookItem.novel_name_id) {
-          let index = nextProps.bookList.list.length - 1;
-          this.props.history.push({pathname: '/read/' + index});
+          let index = nextProps.bookList.list.length;
+          this.props.history.push({pathname: `/read/${this.props.match.params.id}/${index}`});
           this.flag = false;
           break;
         }
@@ -115,7 +115,7 @@ class BookIntroduce extends React.Component{
                         (<Button  size='large' className={styles.cancel} onClick={this.deleteBook}>不追了</Button>) :
                         (<Button  size='large' onClick={this.addBook}>追更新</Button>)
                       }
-                      <Button  size='large' onClick={this.beiginRead}>开始阅读</Button>
+                      <Button  size='large' onClick={this.beiginRead}>開始閱讀</Button>
                     </div>
                     {/* <div className={styles.number}>
                       <p><span>追书人数</span><br/>{this.data.latelyFollower}</p>

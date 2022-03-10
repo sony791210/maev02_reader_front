@@ -1,7 +1,10 @@
 ## 先決條件，共同說明  
 
 1. 前端 :react   閱讀器  
+[https://github.com/sony791210/maev02_reader_front](https://github.com/sony791210/maev02_reader_front)
+
 2. 後端 :go      API 開發  
+[https://github.com/sony791210/maev02_reader_backend](https://github.com/sony791210/maev02_reader_backend)
 3. 資料庫 :mysql   
 4. 資料來源 :python  爬蟲  
 

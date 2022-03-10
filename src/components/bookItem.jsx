@@ -6,6 +6,7 @@ import {Modal} from 'antd';
 const confirm = Modal.confirm;
 
 import  errorLoading from '../images/error.jpg'
+import _ from "lodash";
 
 
 
@@ -28,6 +29,9 @@ const BookItem=(props)=>{
     e.target.src = errorLoading;
   }
 
+  console.log( )
+  
+  // _.find(props.data.list,{page:props.data.page})
   
   return (
     <Tappable
@@ -38,7 +42,7 @@ const BookItem=(props)=>{
         <img src={props.data.cover || `data:image/jpeg;base64, `+props.data.title_photo_url} onError={handleImageErrored} />
         <p>
           <span>{props.data.title }</span><br/>
-          <span>{props.data.page_title}</span>
+          <span>{_.find(props.data.list,{page:parseInt(props.data.page)})?.title}</span>
         </p>
       </div>
     </Tappable>

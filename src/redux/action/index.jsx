@@ -13,6 +13,9 @@ export const ADD_LIST = 'ADD_LIST';
 export const REMOVE_LIST = 'REMOVE_LIST';
 export const REFRESH_LIST = ' REFRESH_LIST';
 export const GET_LIST = 'GET_LIST';
+
+export const ADD_COMIC_LIST = 'ADD_COMIC_LIST';
+
 // export const GET_BOOK_SOURCE = 'GET_BOOK_SOURCE';
 // export const GET_CHAPTER_CONTENT = 'GET_CHAPTER_CONTENT';
 // export const GET_CHAPTER_LIST = 'GET_CHAPTER_LIST';

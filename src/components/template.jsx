@@ -6,12 +6,14 @@ const Main = (component) => {
     let {
       fetchBookList,
       fetchBookItem,
-      bookList
+      bookList,
+      comicList
     } = state
     return {
       fetchBookList,
       fetchBookItem,
-      bookList
+      bookList,
+      comicList
     }
   }
 

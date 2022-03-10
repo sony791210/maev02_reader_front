@@ -15,7 +15,7 @@ const SearchComponent =(props)=> {
 
   const search = React.createRef();
 
-  console.log(props.fetchBookList)
+
   let isflag=props.fetchBookList.name.length ? false : true; 
 
   let state = {

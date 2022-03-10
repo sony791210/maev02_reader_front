@@ -1,5 +1,5 @@
 import {GET_BOOK_LIST, GET_BOOK_ITEM}  from '../action/index';
-import {ADD_LIST, REMOVE_LIST, GET_LIST, REFRESH_LIST} from '../action/index';
+import {ADD_LIST, REMOVE_LIST, GET_LIST, REFRESH_LIST,ADD_COMIC_LIST} from '../action/index';
 import storejs from 'store/dist/store.legacy';
 
 
@@ -66,3 +66,26 @@ export const bookList = (state, action={}) => {
   }
 }
 
+
+
+
+
+//默认书单列表
+export const comicList = (state, action={}) => {
+  let localList = storejs.get('comicList') || [];
+  let localBookIdList =  storejs.get('comicIdList') || [];
+  state = {list: localList, id: new Set(localBookIdList)};
+  switch(action.type){
+    case ADD_COMIC_LIST:
+      if (state.id.has(action.data.comic_id)) {
+        return state;
+      }
+      state.list.unshift(action.data);
+      state.id.add(action.data.comic_id);
+      storejs.set('comicList', state.list);
+      storejs.set('comicIdList', Array.from(state.id));
+      return state;
+    default:
+      return state;
+  }
+}

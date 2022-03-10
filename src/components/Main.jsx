@@ -14,7 +14,7 @@ const { Header, Content,Footer } = Layout
 
 
 const AppComponent =(props)=> {
-
+  console.log(props)
 
   const [isShowFooter,setIsShowFooter]=React.useState(false);
 
@@ -95,10 +95,7 @@ const AppComponent =(props)=> {
         
         <Content className={styles.content} >
           {
-            
-              
-            
-            
+
             props?.bookList?.list?.length === 0 ?
             (
               <div className={styles.null}>
@@ -109,7 +106,7 @@ const AppComponent =(props)=> {
                 (item, index) => 
                 <Row  key={index} align="middle" className={styles.row}>
                   <Col xs={20} sm={20} md={20} lg={22} xl={22}>
-                    <Link to={`/read/${item.novel_name_id}/1`} key={index}>
+                    <Link to={`/read/${item.novel_name_id}/${item.page}`} key={index}>
                       <BookItem data={item} deleteBook={props.deleteBook} key={index} />
                     </Link>
                   </Col>
