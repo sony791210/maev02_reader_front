@@ -10,6 +10,7 @@ import search from '../components/search';
 import bookIntroduce from '../components/bookIntroduce';
 // import about from '../components/about';
 import read from '../components/read';
+import bookshop from '../components/bookshop';
 // import changeOrigin from '../components/changeOrigin';
 
 
@@ -25,6 +26,7 @@ const RouteConfig = () => (
     <Route component={index} /> */}
     <Route path="/" exact component={index} /> 
     <Route path="/search" exact component={search} />
+    <Route path="/bookshop" exact component={bookshop} />
     <Route path="/bookIntroduce/:id"  component={bookIntroduce} />
     <Route path="/read/:id/:page" exact component={read} />
 
