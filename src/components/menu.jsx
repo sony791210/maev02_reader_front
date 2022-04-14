@@ -12,6 +12,10 @@ import styles from '../styles/read.module.less';
 
 
 const Menu=(props)=>{
+
+  console.log("props.novelPage")
+
+  console.log(props.novelPage)
   
   const reactHistory = useHistory();
   //  props.id
@@ -49,6 +53,7 @@ const Menu=(props)=>{
   }, []);
 
   const goToPage=(newPage)=>{
+    newPage=parseInt(newPage);
     props.setNovelPage(newPage);
     reactHistory.push(`${newPage }`)
     props.setChapterListShow(false);
@@ -70,7 +75,7 @@ const Menu=(props)=>{
   return(
     <>
         {
-          bookList.map((item,index) => (<p id={index}  style={setStyle(index+1)} onClick={()=>{goToPage(index+1)}} className={parseInt(props.novelPage, 10) == (index+1) ?  "choosed" : ''}   key={index}  >{item.title}  </p>))
+          bookList.map((item,index) => (<p id={index}  style={setStyle(index+1)} onClick={()=>{goToPage(item.page)}} className={parseInt(props.novelPage, 10) == (item.page) ?  "choosed" : ''}   key={index}  >{item.title}  </p>))
         }
     </>
     

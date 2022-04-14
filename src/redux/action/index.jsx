@@ -15,6 +15,7 @@ export const REFRESH_LIST = ' REFRESH_LIST';
 export const GET_LIST = 'GET_LIST';
 
 export const ADD_COMIC_LIST = 'ADD_COMIC_LIST';
+export const REMOVE_COMIC_LIST = 'REMOVE_COMIC_LIST';
 
 // export const GET_BOOK_SOURCE = 'GET_BOOK_SOURCE';
 // export const GET_CHAPTER_CONTENT = 'GET_CHAPTER_CONTENT';
@@ -72,11 +73,39 @@ export const getBookItem = (id) => {
 }
 
 
+//获取书籍详情
+export const getComickItem = (id) => {
+  return dispatch => {
+    fetch(`/api/v1/comic/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        // data.cover = url2Real(data.cover);
+        // data.wordCount = wordCount2Str(data.wordCount);
+        // data.updated = time2Str(data.updated);
+        return data;
+      })
+      .then(data => dispatch(receiveBookItem(data.data)))
+      .catch(error => {
+        console.log(error);
+      })
+  }
+}
+
+
 
 //删除书籍
 export const deleteBook = (data) => {
   return {
     type: REMOVE_LIST,
+    data
+  }
+}
+
+
+//删除书籍
+export const deleteComic = (data) => {
+  return {
+    type: REMOVE_COMIC_LIST,
     data
   }
 }
@@ -88,35 +117,35 @@ export const addBook = (data) => {
 
     dispatch(addBookInfo(dataIntroduce))
 
-
-    // fetch(`/api/toc?view=summary&book=${data._id}`)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     let sourceId = data.length > 1 ? data[1]._id : data[0]._id; 
-    //     for (let item of data) {
-    //       if (item.source === 'my176') {
-    //         sourceId = item._id;
-    //       }
-    //     }
-    //     dataIntroduce.sourceId = sourceId;
-    //     return fetch(`/api/toc/${sourceId}?view=chapters`);
-    //   })
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     data.readIndex = 0
-    //     dataIntroduce.list = data;
-    //     return dispatch(addBookInfo(dataIntroduce))
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   })
   }
 }
  
+export const addComic = (data) => {
+  let dataIntroduce = data;
+  return dispatch =>{
+
+    dispatch(addComicInfo(dataIntroduce))
+
+  }
+}
+
+
+
+
+
 // 添加书籍
 export const addBookInfo = (data) => {
   return {
     type: ADD_LIST,
+    data
+  }
+}
+
+
+// 添加漫畫
+export const addComicInfo = (data) => {
+  return {
+    type: ADD_COMIC_LIST,
     data
   }
 }

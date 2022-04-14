@@ -7,6 +7,8 @@ import styles from '../styles/main.module.less'
 import template from './template'
 import 'whatwg-fetch'
 
+import {introduce} from "../method/tool"
+
 import  menuPng from '../images/menu.png';
 import  morePng from '../images/more.png';
 
@@ -30,8 +32,8 @@ const AppComponent =(props)=> {
           <a href="#">哦豁阅读器</a>
         </Menu.Item>
         <Menu.Item key="1">
-          <Link to="/about">
-            <QuestionCircleOutlined />关于
+          <Link to="/importdata">
+            匯入小說
           </Link>
         </Menu.Item>
       </Menu>
@@ -60,7 +62,15 @@ const AppComponent =(props)=> {
 
 
   const deleteBook=()=>{
-    props.deleteBook(footerData)
+
+    switch(footerData.content_type){
+      case "text":
+        props.deleteBook(footerData);
+        break;
+      case "png":
+        props.deleteComic(footerData);
+    }
+    
     setIsShowFooter(false);
 
   }
@@ -94,8 +104,13 @@ const AppComponent =(props)=> {
         </Header>
         
         <Content className={styles.content} >
+          <>
+            <Row  key="navel" justify="center" align="middle" className={styles.rowNavel}>
+                  小說
+            </Row> 
+          
           {
-
+            
             props?.bookList?.list?.length === 0 ?
             (
               <div className={styles.null}>
@@ -118,6 +133,43 @@ const AppComponent =(props)=> {
             
 
           }
+
+
+            <Row  key="comic" justify="center" align="middle" className={styles.rowComic}>
+                  漫畫
+            </Row> 
+
+            {
+            
+              props?.comicList?.list?.length === 0 ?
+              (
+                <div className={styles.null}>
+                  漫畫架空空的！快去添加漫畫書籍吧！
+                </div>
+              )
+              : props?.comicList?.list?.map(
+                  (item, index) => 
+                  <Row  key={index} align="middle" className={styles.row}>
+                    <Col xs={20} sm={20} md={20} lg={22} xl={22}>
+                      <Link to={`/comicRead/${item.comic_name_id}/${ (item.page)??1 }`} key={index}>
+                        <BookItem data={item} deleteBook={props.deleteBook} key={index} />
+                      </Link>
+                    </Col>
+                    <Col xs={4} sm={4} md={4} lg={2} xl={2}>
+                      <MoreOutlined  className={styles.more} rotate={90} onClick={()=>{showFooter(item)}}/>
+                    </Col>
+                  </Row>
+                  )
+            
+
+          }
+
+
+
+            <Row  key="video" justify="center" align="middle" className={styles.rowVideo}>
+                  影片
+            </Row> 
+          </>
         </Content>
 
         {
@@ -136,7 +188,7 @@ const AppComponent =(props)=> {
                 </Col>
                 <Col span={5} xs={8} md={4}>
                   
-                  <Link to={`/bookIntroduce/${footerData.novel_name_id}`}>
+                  <Link to={ introduce(footerData)}>
                     <Button>
                       詳情
                     </Button>

@@ -4,17 +4,19 @@ import { Link } from 'react-router-dom';
 
 import  errorLoading from '../images/error.jpg'
 
+import {introduce} from "../method/tool"
+
 const ResultBookItem=(props)=>{
 
   const handleImageErrored=(e)=>{
     e.target.src = errorLoading;
   }
 
-  console.log(props.data)
+
   return(
     <>
     
-      <Link to={  (props?.data?.content_type=="text")? `/bookIntroduce/${props.data.novel_name_id}`:`/bookIntroduce/${props.data.novel_name_id}` }>
+      <Link to={  introduce(props.data) }>
         <div className={styles.box}>
           <img src={`data:image/jpeg;base64, `+props.data.title_photo_url} onError={handleImageErrored}/>
           <p>

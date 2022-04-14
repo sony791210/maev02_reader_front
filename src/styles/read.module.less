@@ -5,7 +5,14 @@
     position: fixed !important;
     width: 100vw !important;
     top: 0px !important;
+    z-index: 100;
     // display: flex;
+  }
+  
+  .title{
+    overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   
   .head-font-base{
@@ -39,11 +46,11 @@
       outline: none !important;
       & > div{
         width: 100vw !important;
-        height: 100px !important;
+        height: 140px !important;
         background-color: rgba(25, 25, 25, 0.8) !important;
         position: absolute !important;
         left: 0px !important;
-        top: -100px !important;
+        top: -140px !important;
         padding: 10px 20px !important;
         div{
           text-align: left !important;
@@ -58,6 +65,12 @@
         }
 
         .color{
+
+    
+          display: flex;
+          align-items: center;
+      
+
           i{
             display: inline-block !important;
             width: 30px !important;
@@ -73,7 +86,7 @@
   .icon-base{
     font-size: 1.6rem ;
     color:white ;
-    display: inline-block !important;
+    display: block !important;
     line-height: 64px !important;
     height: inherit !important;
   }
@@ -82,7 +95,7 @@
     .icon-base;
     padding-bottom: 50px !important;
     padding-right: 10px !important;
-    float: left !important;
+
     white-space: pre-wrap!important;
     word-wrap: break-word!important;
   }
@@ -95,9 +108,20 @@
     height: 100vh !important;
     overflow-y: scroll !important;
   }
+
+
+  .boxComic{
+    padding: 0px 5px !important;
+    
+    min-height: 100vh !important;
+    height: 100vh !important;
+    overflow-y: scroll !important;
+  }
+
+
   .control{
     padding-bottom: 50px !important;
-    margin-bottom: 50px;
+    margin-bottom: 100px!important;
     padding: 0px 50px!important;
     cursor: pointer!important;
     span:first-child{
@@ -132,7 +156,16 @@
     }
 
     .choosed{
-      color: red;
+      color: red !important;
     }
+
+    
+  }
+  .ant-select-selector{
+    font-size:1.0rem !important;
+    background:none !important;
+    border:none !important;
+    color:white;
   }
 }
+
