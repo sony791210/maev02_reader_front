@@ -12,7 +12,7 @@ import {introduce} from "../method/tool"
 import  menuPng from '../images/menu.png';
 
 
-import zhszs from "../images/zhsxs.png";
+import zhsxs from "../images/zhsxs.png";
 import sto from "../images/sto.gif";
 
 
@@ -51,9 +51,9 @@ const AppComponent =(props)=> {
 
   const NavelList=[
     {
-      cover:zhszs,
+      cover:zhsxs,
       title:"宙斯小說網",
-      webName:'zhszs'     
+      webName:'zhsxs'
     },
     {
       cover:sto,

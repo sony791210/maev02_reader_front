@@ -9,6 +9,7 @@
   "dependencies": {
     "animate.css": "^3.5.2",
     "antd": "^4.17.2",
+    "axios": "^0.26.1",
     "create-react-class": "^15.7.0",
     "lodash": "^4.17.21",
     "normalize.css": "^4.0.0",
