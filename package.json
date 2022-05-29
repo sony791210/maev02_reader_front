@@ -11,6 +11,7 @@
     "antd": "^4.17.2",
     "axios": "^0.26.1",
     "create-react-class": "^15.7.0",
+    "immer": "^9.0.12",
     "lodash": "^4.17.21",
     "normalize.css": "^4.0.0",
     "randomcolor": "^0.4.4",

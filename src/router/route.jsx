@@ -11,6 +11,7 @@ import bookIntroduce  from '../components/bookIntroduce';
 import comicIntroduce from '../components/comicIntroduce';
 // import about from '../components/about';
 import read from '../components/read';
+import readByPage from '../components/readByPage';
 
 import comicRead from '../components/comicRead'
 import videoRead from '../components/videoRead'
@@ -39,6 +40,7 @@ const RouteConfig = () => (
     <Route path="/bookshop" exact component={bookshop} />
     <Route path="/bookIntroduce/:id"   component={bookIntroduce} />
     <Route path="/read/:id/:page" exact component={read} />
+    <Route path="/readbypage/:id/:page" exact component={readByPage} />
 
 
     <Route path="/comicIntroduce/:id"  component={comicIntroduce} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Layout, Menu, Dropdown, Spin,Row,Col,Button,Modal} from 'antd'
+import {Layout, Menu, Dropdown, Spin,Row,Col,Button,Modal,Switch} from 'antd'
 import {SearchOutlined,QuestionCircleOutlined,HomeOutlined,MoreOutlined,DownloadOutlined,DeleteOutlined} from '@ant-design/icons';
 import { Link } from 'react-router-dom'
 import BookItem from './bookItem'
@@ -11,12 +11,13 @@ import {introduce} from "../method/tool"
 
 import  menuPng from '../images/menu.png';
 import  morePng from '../images/more.png';
+import storejs from "store";
 
 const { Header, Content,Footer } = Layout
 
 
 const AppComponent =(props)=> {
-  console.log(props)
+
 
   const [isShowFooter,setIsShowFooter]=React.useState(false);
 
@@ -24,6 +25,8 @@ const AppComponent =(props)=> {
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
+
+  const [isCheckeds,setIsCheckeds]= React.useState(props.bookList.list.map((e)=>e?.ManualPage));
 
   const Menubar=(props)=>{
     return(
@@ -54,6 +57,18 @@ const AppComponent =(props)=> {
 
   const clickContent=()=>{
     console.log('QQQQ')
+  }
+
+
+  const onChangePage=(item,index)=>{
+    let bookList = storejs.get('bookList');
+    bookList[index]["ManualPage"]=!(bookList[index]["ManualPage"]);
+    storejs.set('bookList', bookList);
+
+    //改變ui狀態用
+    let tmp=[...isCheckeds];
+    tmp[index]=!(tmp[index]);
+    setIsCheckeds(tmp)
   }
 
   const handleCancel = () => {
@@ -120,10 +135,15 @@ const AppComponent =(props)=> {
             : props?.bookList?.list?.map(
                 (item, index) => 
                 <Row  key={index} align="middle" className={styles.row}>
-                  <Col xs={20} sm={20} md={20} lg={22} xl={22}>
-                    <Link to={`/read/${item.novel_name_id}/${item.page}`} key={index}>
+                  <Col xs={16} sm={16} md={16} lg={20} xl={20}>
+                    <Link to={  ()=>{ return(isCheckeds[index])?`/readbypage/${item.novel_name_id}/${item.page}`:`/read/${item.novel_name_id}/${item.page}`  }  } key={index}>
                       <BookItem data={item} deleteBook={props.deleteBook} key={index} />
                     </Link>
+                  </Col>
+                  <Col xs={4} sm={4} md={4} lg={2} xl={2}>
+                    <Switch checkedChildren="手動翻頁" unCheckedChildren="自動翻頁" checked={isCheckeds[index]}  onChange={ ()=>{onChangePage(item,index)} } />
+
+
                   </Col>
                   <Col xs={4} sm={4} md={4} lg={2} xl={2}>
                     <MoreOutlined  className={styles.more} rotate={90} onClick={()=>{showFooter(item)}}/>

@@ -21,6 +21,7 @@ const { Option } = Select;
 
 const Read2 = (props) => {
 
+
   const reactHistory = useHistory();
 
   const [content, setContent] = React.useState(null);
@@ -53,12 +54,12 @@ const Read2 = (props) => {
     setLoading(true);
 
     var pos = _.findIndex(storejs.get('comicList'), { comic_name_id: id })
-    console.log(pos)
+    
 
-    console.log(storejs.get('comicList'))
+    
     let chapters = storejs.get('comicList')[pos]?.list;
 
-    console.log(chapters)
+    
     
 
     //抓資料
@@ -88,7 +89,7 @@ const Read2 = (props) => {
     return fetch(`/api/v1/comic/${id}/${page}`)
       .then(res => res.json())
       .then(res => {
-        console.log(res)
+        
         if (!res?.data) {
           message.info('沒有此章節了');
           setLoading(false);
@@ -109,10 +110,10 @@ const Read2 = (props) => {
 
   //改變位置
   const setReadScroll = () => {
-    let comicList = storejs.get('comicList');
-    let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
-    comicList[pos].readScroll = boxRef.current.scrollTop;
-    storejs.set('comicList', comicList);
+    // let comicList = storejs.get('comicList');
+    // let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
+    // comicList[pos].readScroll = boxRef.current.scrollTop;
+    // storejs.set('comicList', comicList);
   }
 
 
@@ -123,14 +124,16 @@ const Read2 = (props) => {
   //換頁
   React.useEffect(() => {
 
-    console.log(isFirstRender)
+    
     //  設定第二次再渲染
     if (isFirstRender) return;
 
     setShow(false);
     let comicList = storejs.get('comicList');
-    let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
-    comicList[pos].readScroll = 0;
+    
+    
+    let pos = _.findIndex(comicList, { comic_name_id: novelId })
+    // comicList[pos].readScroll = 0;
     comicList[pos].page = props.match.params.page;
 
     storejs.set('comicList', comicList);
@@ -144,6 +147,8 @@ const Read2 = (props) => {
   //第一次登入
   React.useEffect(() => {
     let id = props.match.params.id;
+
+    id=decodeURI(id)
     let page = props.match.params.page || 1;
     getChapter(id, page);
     //取消是否第一次渲染
@@ -154,8 +159,8 @@ const Read2 = (props) => {
   //改變內容
   React.useEffect(() => {
     let comicList = storejs.get('comicList');
-    console.log()
-    let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
+    
+    let pos = _.findIndex(comicList, { comic_name_id: novelId })
 
     boxRef.current.scrollTop = _.has(comicList[pos], 'readScroll') ? comicList[pos].readScroll : 0;
 
@@ -187,11 +192,14 @@ const Read2 = (props) => {
 
   const imageShow=()=>{
     let img=imgContent.map((ele,index)=>{
-      
-        return <Image  key={index} src={ele} preview={false}></Image>
-      
+
+        if(ele.match(/(gif|png|jpg|jpeg)$/)){
+          return <Image  key={index} src={ele} preview={false}></Image>
+        }
+
+
     })
-    console.log(img)
+
     return img
   }
 

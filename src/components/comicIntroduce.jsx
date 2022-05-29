@@ -30,7 +30,6 @@ class BookIntroduce extends React.Component{
     this.flag = false; //是否进入阅读模式
 
 
-
     this.props.getComickItem(this.props.match.params.id);
 
 
@@ -73,7 +72,7 @@ class BookIntroduce extends React.Component{
       let list = nextProps.comicList.list
       for (let index in list) {
         if (list[index].comic_name_id === nextProps.fetchBookItem.comic_name_id) {
-          this.props.history.push({pathname: `/read/${this.props.match.params.id}/1`});
+          this.props.history.push({pathname: `/comicRead/${this.props.match.params.id}/1`});
           this.flag = false;
           break;
         }

@@ -11,7 +11,7 @@ import 'whatwg-fetch';
 import storejs from 'store/dist/store.legacy';
 
 import _ from "lodash";
-import produce from "immer";
+
 
 const { Header, Footer } = Layout;
 
@@ -19,60 +19,27 @@ const { Header, Footer } = Layout;
 const { Option } = Select;
 
 
-
-const showDataReducer = produce((draft, action) => {
-  switch (action.type) {
-    case "append":
-      let arr=[]
-      draft.content =[...draft.content,  '   ' + action.data.content.replace(/\n/g, "\n   ")  ] ;
-      draft.tmpTitle = action.data.title;
-      return draft;
-    case "title":
-      draft.title = draft.tmpTitle;
-      return draft;
-  }
-});
-
-
-
 const Read2 = (props) => {
 
   const reactHistory = useHistory();
 
-
+  const [content, setContent] = React.useState(null);
+  const [title, setTitle] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [notOverScroll, setNotOverScroll] = React.useState(true);
   const [chapterListShow, setChapterListShow] = React.useState(false);
-
-
-  const [heightContent,setHeightContent]=React.useState(0);
-  const [diffHeightArray,setDiffHeightArray]=React.useState([] );
-
-
-
-  //初始化資料
-  let newData = {
-    title: "",
-    tmpTitle:"",
-    content:[]
-  };
-  let [state, dispatch] = React.useReducer(showDataReducer, newData);
 
 
 
   let readSettingStore = storejs.get('readSetting') || { fontSize: 50, backgroundColor: 'rgb(196, 196 ,196)' };
   const [readSetting, seteadSetting] = React.useState(readSettingStore);
   const [show, setShow] = React.useState(false);
-  const [showRediret, setShowRediret] = React.useState(false);
   const [showSetting, setShowSetting] = React.useState(false);
 
   const boxRef = React.createRef();
-  const contentRef = React.createRef();
 
   const [bookMenuList, setBookMenuList] = React.useState([]);
 
   const [isFirstRender, setIsFirstRender] = React.useState(true);
-
   const [novelId, setNovelId] = React.useState(props.match.params.id);
   const [novelPage, setNovelPage] = React.useState(props.match.params.page);
 
@@ -90,20 +57,15 @@ const Read2 = (props) => {
     if (_.find(chapters, { page: parseInt(page) })) {
 
       let tmpData = _.get(chapters, page)
-
-
-
-
-      dispatch({
-        type: "append",
-        data: tmpData,
-      });
-
-
       let bookList = storejs.get('bookList');
-      // bookList[pos].readIndex = page;
-      // bookList[pos].page = page;
 
+
+
+      bookList[pos].readIndex = page;
+      bookList[pos].page = page;
+      setTitle(tmpData.title);
+      setContent('   ' + tmpData.content.replace(/\n/g, "\n   "));
+      console.log(bookList)
       storejs.set('bookList', bookList);
 
       setLoading(false);
@@ -116,18 +78,14 @@ const Read2 = (props) => {
     //存擋及show資料
 
     let bookList = storejs.get('bookList');
-    // bookList[pos].readIndex = page;
-    // bookList[pos].page = page;
+    bookList[pos].readIndex = page;
+    bookList[pos].page = page;
 
     _.set(bookList, [pos, 'list', page], data)
     storejs.set('bookList', bookList);
 
-    dispatch({
-      type: "append",
-      data: data,
-    });
-
-
+    setTitle(data.title);
+    setContent('   ' + data.content.replace(/\n/g, "\n   "));
     setLoading(false);
     setBookMenuList(bookList[pos]?.list)
 
@@ -159,90 +117,12 @@ const Read2 = (props) => {
     setShow(!show);
   }
 
-  const countValue=(array)=>{
-    let result=0;
-    if(array.length==0) {
-      result=0;
-    }else if(array.length==1){
-      result=array[0]*3/4
-    }else{
-      result=(array[array.length - 1]-array[array.length - 2])*3/4  + array[array.length - 2]
-    }
-    return parseInt(result)
-  }
 
   //改變位置
-  const setReadScroll = async() => {
-    if ( isFirstRender){
-        setIsFirstRender(false);
-        return;
-    }
+  const setReadScroll = () => {
     let bookList = storejs.get('bookList');
     let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
-    let currentPos=boxRef.current.scrollTop;
-
-
-
-    //當刷新來到新的頁面後 ，讀到新的頁面
-    if(boxRef.current.scrollTop  >= heightContent){
-      if(! diffHeightArray.includes(contentRef.current.scrollHeight) ){
-        //記錄差異 後續要轉換頁數使用
-        setDiffHeightArray( [...diffHeightArray,contentRef.current.scrollHeight] );
-        //紀錄新的高度
-        setHeightContent(contentRef.current.scrollHeight);
-        //再次可以刷新
-        setNotOverScroll(true)
-
-        //更新title
-        dispatch({
-          type: "title"
-        });
-        //紀錄看到新的頁面
-        bookList[pos].readIndex = novelPage.toString();
-        bookList[pos].page = novelPage.toString();
-
-
-      }
-    }
-
-
-
-
-    //只有第一次需要抓取下一頁
-    if( boxRef.current.scrollTop >= countValue(diffHeightArray) && notOverScroll ){
-
-      setNotOverScroll(false)
-
-      //要用usereduer去做
-      //打api
-      let data = await getFetch(novelId, parseInt(novelPage)+1);
-
-      //代表成功
-      if(data){
-        dispatch({
-          type: "append",
-          data: data,
-        });
-        setNovelPage(parseInt(novelPage)+1)
-      }
-
-    }
-
-
-
-    if(diffHeightArray.length>=2){
-
-      if( (boxRef.current.scrollTop - diffHeightArray[diffHeightArray.length-1] ) > 0){
-        currentPos=boxRef.current.scrollTop - diffHeightArray[diffHeightArray.length-1]
-      }else{
-        currentPos=boxRef.current.scrollTop - diffHeightArray[diffHeightArray.length-2]
-      }
-    }else if(diffHeightArray.length==1){
-      currentPos=boxRef.current.scrollTop
-    }
-    console.log(currentPos)
-
-    bookList[pos].readScroll = currentPos;
+    bookList[pos].readScroll = boxRef.current.scrollTop;
     storejs.set('bookList', bookList);
   }
 
@@ -271,8 +151,7 @@ const Read2 = (props) => {
     storejs.set('readSetting', { ...readSetting, fontSize: readSetting.fontSize + 1 });
 
   }
-
-  //字體變小
+  //字體變小  
   const fontDown = () => {
     if (readSetting.fontSize <= 12) {
       return;
@@ -284,74 +163,45 @@ const Read2 = (props) => {
 
 
   //換頁
-  // React.useEffect(() => {
-  //   //  設定第二次再渲染
-  //   if (isFirstRender) return;
-  //
-  //   setShow(false);
-  //   let bookList = storejs.get('bookList');
-  //   let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
-  //   bookList[pos].readScroll = 0;
-  //   bookList[pos].page = props.match.params.page;
-  //
-  //   storejs.set('bookList', bookList);
-  //   getChapter(novelId, novelPage);
-  //
-  // }, [novelPage]);
+  React.useEffect(() => {
+    //  設定第二次再渲染
+    if (isFirstRender) return;
+
+    setShow(false);
+    let bookList = storejs.get('bookList');
+    let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
+    bookList[pos].readScroll = 0;
+    bookList[pos].page = props.match.params.page;
+
+    storejs.set('bookList', bookList);
+
+    getChapter(novelId, novelPage);
+
+
+
+  }, [novelPage]);
 
 
   //第一次登入
   React.useEffect(() => {
-    console.log("first")
     let id = props.match.params.id;
     let page = props.match.params.page || 1;
-
-    let bookList = storejs.get('bookList');
-    let pos = _.findIndex(bookList, { novel_name_id: parseInt(id) })
-
-    if( parseInt(bookList[pos].page)!=parseInt(page)){
-      setShowRediret(true);
-    }else{
-      getChapter(id, page);
-    }
-
-
-
-
+    getChapter(id, page);
+    //取消是否第一次渲染
+    setIsFirstRender(false);
   }, []);
 
-  React.useEffect(() => {
-    if(state.content.length==1){
-        let bookList = storejs.get('bookList');
-        let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
-        console.log(bookList[pos].readScroll )
-        boxRef.current.scrollTop = _.has(bookList[pos], 'readScroll') ? bookList[pos].readScroll : 0;
-
-
-    }
-  }, [state.content]);
-
-
-
-  const rediret=()=>{
-    let id = props.match.params.id;
-    let bookList = storejs.get('bookList');
-    let pos = _.findIndex(bookList, { novel_name_id: parseInt(id) })
-
-    console.log(bookList[pos].page)
-    window.location.href = `/read/${id}/${bookList[pos].page}`;
-  }
 
   //改變內容
-  // React.useEffect(() => {
-  //   let bookList = storejs.get('bookList');
-  //   console.log()
-  //   let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
-  //
-  //   boxRef.current.scrollTop = _.has(bookList[pos], 'readScroll') ? bookList[pos].readScroll : 0;
-  //
-  //
-  // }, [content]);
+  React.useEffect(() => {
+    let bookList = storejs.get('bookList');
+    console.log()
+    let pos = _.findIndex(bookList, { novel_name_id: parseInt(novelId) })
+
+    boxRef.current.scrollTop = _.has(bookList[pos], 'readScroll') ? bookList[pos].readScroll : 0;
+
+
+  }, [content]);
 
 
 
@@ -379,22 +229,8 @@ const Read2 = (props) => {
 
 
 
-
 return (
   <>
-    <Modal
-        visible={showRediret}
-        onOk={rediret}
-        onCancel={  ()=>{
-          getChapter(novelId, novelPage);
-          setShowRediret(false)}
-        }
-        okText="確定"
-        cancelText="取消"
-    >
-      <p>是否前往上次觀看內容</p>
-    </Modal>
-
     <Spin className='loading' spinning={loading} tip="章节内容加载中">
       <Layout >
         <Modal
@@ -421,7 +257,7 @@ return (
                 </Col>
                 <Col flex="0 1 auto" span={18}>
 
-                  <h1 className={styles.title} style={{ fontSize: "20px", color: "#FFF" }}>{state.title}</h1>
+                  <h1 className={styles.title} style={{ fontSize: "20px", color: "#FFF" }}>{title}</h1>
                 </Col>
                 <Col flex="0 1 auto" span={2}>
 
@@ -435,20 +271,8 @@ return (
           {
             loading ? '' :
               <div>
-                <h1 className={styles.title}>{state.title}</h1>
-
-
-                <div ref={contentRef}>
-                  {
-                    state.content.map( (item,i) =>
-                        <pre key={i+"pr"}  className={styles.pre} style={readSetting}>{item}</pre>
-                    )
-                  }
-                </div>
-
-
-
-
+                <h1 className={styles.title}>{title}</h1>
+                <pre className={styles.pre} style={readSetting}>{content}</pre>
                 <h1 className={styles.control}>
                   <span onClick={preChapter}><LeftOutlined style={{ color: "#FFF", fontSize: 60 }} /></span>
                   <span onClick={nextChapter}><RightOutlined style={{ color: "#FFF", fontSize: 60 }} /></span>

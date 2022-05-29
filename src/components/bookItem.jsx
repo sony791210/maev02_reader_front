@@ -34,6 +34,7 @@ const BookItem=(props)=>{
   // _.find(props.data.list,{page:props.data.page})
   
   return (
+      <>
     <Tappable
       onPress ={showConfirm}
     >
@@ -44,8 +45,12 @@ const BookItem=(props)=>{
           <span>{props.data.title }</span><br/>
           <span>{_.find(props.data.list,{page:parseInt(props.data.page)})?.title}</span>
         </p>
+
       </div>
+
     </Tappable>
+
+      </>
   )
 }
 

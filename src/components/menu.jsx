@@ -55,7 +55,7 @@ const Menu=(props)=>{
   const goToPage=(newPage)=>{
     newPage=parseInt(newPage);
     props.setNovelPage(newPage);
-    reactHistory.push(`${newPage }`)
+    window.location.href = `/${window.location.pathname.split('/')[1]}/${props.novelId}/${newPage}`;
     props.setChapterListShow(false);
   }
 
