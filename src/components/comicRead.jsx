@@ -54,12 +54,12 @@ const Read2 = (props) => {
     setLoading(true);
 
     var pos = _.findIndex(storejs.get('comicList'), { comic_name_id: id })
-    
 
-    
+
+
     let chapters = storejs.get('comicList')[pos]?.list;
 
-    
+
     
 
     //抓資料
@@ -89,7 +89,7 @@ const Read2 = (props) => {
     return fetch(`/api/v1/comic/${id}/${page}`)
       .then(res => res.json())
       .then(res => {
-        
+
         if (!res?.data) {
           message.info('沒有此章節了');
           setLoading(false);
@@ -124,14 +124,14 @@ const Read2 = (props) => {
   //換頁
   React.useEffect(() => {
 
-    
+
     //  設定第二次再渲染
     if (isFirstRender) return;
 
     setShow(false);
     let comicList = storejs.get('comicList');
-    
-    
+
+
     let pos = _.findIndex(comicList, { comic_name_id: novelId })
     // comicList[pos].readScroll = 0;
     comicList[pos].page = props.match.params.page;
@@ -159,7 +159,7 @@ const Read2 = (props) => {
   //改變內容
   React.useEffect(() => {
     let comicList = storejs.get('comicList');
-    
+
     let pos = _.findIndex(comicList, { comic_name_id: novelId })
 
     boxRef.current.scrollTop = _.has(comicList[pos], 'readScroll') ? comicList[pos].readScroll : 0;

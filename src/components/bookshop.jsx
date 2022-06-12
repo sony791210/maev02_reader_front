@@ -8,20 +8,20 @@ import storejs from 'store/dist/store.legacy';
 import randomcolor from 'randomcolor';
 import { Carousel } from 'antd';
 import {HomeOutlined,SearchOutlined,CloseCircleOutlined,DeleteOutlined} from '@ant-design/icons';
-
+import { useHistory } from 'react-router-dom';
 const { Header, Content } = Layout
 
 const { Meta } = Card;
 const BookShop =(props)=> {
 
 
-
+    const history = useHistory();
     function onChange(a, b, c) {
         console.log(a, b, c);
-      }
+    }
       
       const contentStyle = {
-        height: '160px',
+        height: '100px',
         color: '#fff',
         lineHeight: '160px',
         textAlign: 'center',
@@ -32,6 +32,51 @@ const BookShop =(props)=> {
       const test=()=>{
           console.log('test');
       }
+
+      const [navelData,setNavelData]=React.useState([])
+      const [comicData,setComicData]=React.useState([])
+      const [lastData,setLastData]=React.useState([])
+
+      const getPlatFormInfo=(types,action)=>{
+          fetch(`/api/v1/platform/introduce/${types}`)
+              .then(res => res.json())
+              .then( data => {
+                  console.log(data)
+                  action(data.data)
+              })
+              .catch( error => console.log(error));
+      }
+
+      const getPlatFormLast=(action)=>{
+          fetch(`/api/v1/platform/lastinfo`)
+              .then(res => res.json())
+              .then( data => {
+                  console.log(data)
+                  action(data.data)
+              })
+              .catch( error => console.log(error));
+      }
+
+
+      const goTo=(to,data)=>{
+
+          let newid=data[{
+              "navel":"novel_name_id",
+              "comic":"comic_name_id"
+          }[to]]
+          let urlPath={
+              "navel":"bookIntroduce",
+              "comic":"comicIntroduce"
+          }[to]
+
+          history.push(`/${urlPath}/${newid}`);
+      }
+
+      React.useEffect(()=>{
+          getPlatFormInfo("navel",setNavelData)
+          getPlatFormInfo("comic",setComicData)
+          getPlatFormLast(setLastData)
+      },[])
 
     return (
         <div className="page" >
@@ -60,96 +105,101 @@ const BookShop =(props)=> {
             
             <Content className={styles.content}>
             
-            <Carousel afterChange={onChange}>
-                <div>
-                <h3 style={contentStyle}>1</h3>
-                </div>
-                <div>
-                <h3 style={contentStyle}>2</h3>
-                </div>
-                <div>
-                <h3 style={contentStyle}>3</h3>
-                </div>
-                <div>
-                <h3 style={contentStyle}>4</h3>
-                </div>
+            <Carousel  afterChange={onChange}>
+                {
+                    lastData.map((data,index)=>{
+                        return(
+
+                            <div key={"carousel"+index} >
+
+                                <div className={styles.carousel}>
+                                    {/*<Image  preview={false}  height={100}  src={ (data.title_photo_url && `data:image/jpeg;base64, `+data.title_photo_url) || "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" } ></Image>*/}
+
+
+
+                                    <div >
+                                        <div className={styles.boxxs}>
+                                            <p className={styles.boxxstitle}  >{data.title}</p>
+                                            <p className={styles.boxxscontent}> {data.long_info}</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+
+                                    </div>
+
+                                    <div className="book-container">
+                                        <div className="book">
+                                            <img alt="test"
+                                                 src={ (data.title_photo_url && `data:image/jpeg;base64, `+data.title_photo_url) || "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" }/>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        )
+                    })
+                }
+
+
             </Carousel>
 
             <Divider/>
 
 
 
-            <Card style={{"textAlign":"left"}}  title="套選" extra={<a href="#">More</a>}>
+
+            <Card style={{"textAlign":"left"}}  title="小說精選">
                 <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 },{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
-                    <Col span={24}>
-                        <Card onClick={test} hoverable bordered={true}>
-                            <Row >
-                                <Col xs={10} sm={10} md={6} lg={4} xl={4}>
-                                    <Image  width={100}  preview={false}  src={"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"} />
+
+                    {
+                        navelData.map((data,index)=>{
+                            return (
+                                <Col xs={24} sm={24} md={8} lg={8} xl={8}  key={"navel"+index}>
+                                    <Card onClick={   ()=>{goTo('navel',data)}  }  style={{display:"flex",alignItems: "center"}} hoverable cover={
+                                        <Image  preview={false}  width={80}    src={ (data.title_photo_url && `data:image/jpeg;base64, `+data.title_photo_url) || "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" } />} bordered={true}>
+                                        <Meta title={data.title}  description={data.long_info}/>
+                                    </Card>
                                 </Col>
-                                <Col >
-    
-                                    <Meta title="老心戰室"  description="This is the description"/>
-                                </Col>
-                     
-                            </Row>
-                            
-                        </Card>
-                    </Col>
-                    
-                    <Col span={8}>
-                        <Card hoverable title="測試QQ" bordered={true}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card hoverable title="測試嗚嗚" bordered={false}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col span={8}>
-                        <Card hoverable title="測試高手" bordered={false}>
-                            Card content
-                        </Card>
-                    </Col>
+                            )
+
+                        })
+                    }
+
+
+
+
+
                 </Row>
             </Card>
+
+
 
             <Divider/>
 
 
-            <Card style={{"textAlign":"left"}}  title="套選">
+            <Card style={{"textAlign":"left"}}  title="漫畫精選">
                 <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 },{ xs: 8, sm: 16, md: 24, lg: 32 }]}>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card  hoverable cover={<Image  preview={false}  width={100}    src={"https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"} />} bordered={true}>
-                            <Meta title="老心戰室"  description="This is the description"/>
-                        </Card>
-                    </Col>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card hoverable title="測試天才" bordered={true}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card hoverable title="測試ABC" bordered={true}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card hoverable title="測試QQ" bordered={true}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card hoverable title="測試嗚嗚" bordered={false}>
-                            Card content
-                        </Card>
-                    </Col>
-                    <Col xs={8} sm={8} md={8} lg={8} xl={4}>
-                        <Card hoverable title="測試高手" bordered={false}>
-                            Card content
-                        </Card>
-                    </Col>
+
+                    {
+                        comicData.map((data,index)=>{
+                            return (
+                                <Col xs={24} sm={24} md={8} lg={8} xl={8}  key={"comic"+index}>
+                                    <Card onClick={()=>{goTo('comic',data)}  }  style={{display:"flex",alignItems: "center"}} hoverable cover={
+                                        <Image  preview={false}  width={80}    src={ (data.title_photo_url && `data:image/jpeg;base64, `+data.title_photo_url) || "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" } />} bordered={true}>
+                                        <Meta title={data.title}  description={data.long_info}/>
+                                    </Card>
+                                </Col>
+                            )
+
+                        })
+                    }
+
+
+
+
+
                 </Row>
             </Card>
 

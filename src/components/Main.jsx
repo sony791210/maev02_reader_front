@@ -31,9 +31,9 @@ const AppComponent =(props)=> {
   const Menubar=(props)=>{
     return(
       <Menu>
-        <Menu.Item key="0">
-          <a href="#">哦豁阅读器</a>
-        </Menu.Item>
+        {/*<Menu.Item key="0">*/}
+        {/*  <a href="#">哦豁阅读器</a>*/}
+        {/*</Menu.Item>*/}
         <Menu.Item key="1">
           <Link to="/importdata">
             匯入小說

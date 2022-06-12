@@ -86,9 +86,7 @@ class BookIntroduce extends React.Component{
             </span>
 
             <span className={styles.home}>
-              <Link to="/search">
-                <ArrowLeftOutlined />
-              </Link>
+                <ArrowLeftOutlined onClick={()=>{history.back()}} />
             </span>
             
             <span className={styles.title}>書籍資訊</span>

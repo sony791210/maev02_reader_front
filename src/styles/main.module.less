@@ -202,6 +202,39 @@
     }
   }
 
+  .carousel{
+    display: flex;
+    background: white;
+    //align-items: center;
+    //text-align: center;
+    justify-content: space-between;
+
+
+    .boxxs{
+      margin-top: 10px;
+      margin-left: 10%;
+      .boxxstitle{
+        color:#364d79;
+        font-size:25px;
+        overflow : hidden;
+        text-overflow : ellipsis;
+        white-space : nowrap;
+        width : 300px;
+        font-family: tetai;
+      }
+      .boxxscontent{
+        display: -webkit-box;
+        -webkit-line-clamp: 2; //行數
+        -webkit-box-orient: vertical;
+        white-space: normal;
+        width : 250px;
+        overflow:hidden;
+      }
+    }
+
+  }
+
+
 }
 
 
@@ -209,5 +242,133 @@
 :global {
   .ant-input-affix-wrapper .anticon-close-circle{
     color: black !important;
+  }
+
+  .ant-card-meta-description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; //行數
+    -webkit-box-orient: vertical;
+    white-space: normal;
+  }
+  .ant-card-cover{
+    text-align: center;
+
+  }
+  @font-face{
+    font-family: 'tetai';
+    src: url("/static/tetai-2.ttf");
+  }
+
+  .book-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 990px;
+    @media screen and (max-width 768px) {
+      margin-right:10% ;
+    }
+    @media screen and (max-width 400px) {
+      margin-right:10px ;
+    }
+
+  }
+
+  @keyframes initAnimation {
+    0% {
+      transform: rotateY(-2deg);
+    }
+    100% {
+      transform: rotateY(-28deg);
+    }
+  }
+
+
+
+
+  .book-container .book {
+    width: 66px;
+    height: 100px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateY(-28deg);
+    transition: transform 1s ease;
+    animation: 1s ease 0s 1 initAnimation;
+
+
+
+
+
+  }
+
+  .book-container .book:hover {
+    transform: rotateY(-2deg);
+  }
+
+  .book-container .book > :first-child {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 66px;
+    height: 100px;
+    transform: translateZ(12.5px);
+    background-color: #01060f;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 5px 5px 20px #aaaaaa;
+    background-color: #01060f;
+  }
+
+  .book-container .book::before {
+    position: absolute;
+    content: ' ';
+    left: 0;
+    top: 4px;
+    width: 23px;
+    height: 92px;
+    transform: translateX(49.5px) rotateY(90deg);
+    background: linear-gradient(90deg,
+    #fff 0%,
+    #f9f9f9 5%,
+    #fff 10%,
+    #f9f9f9 15%,
+    #fff 20%,
+    #f9f9f9 25%,
+    #fff 30%,
+    #f9f9f9 35%,
+    #fff 40%,
+    #f9f9f9 45%,
+    #fff 50%,
+    #f9f9f9 55%,
+    #fff 60%,
+    #f9f9f9 65%,
+    #fff 70%,
+    #f9f9f9 75%,
+    #fff 80%,
+    #f9f9f9 85%,
+    #fff 90%,
+    #f9f9f9 95%,
+    #fff 100%
+    );
+  }
+
+  .book-container .book::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: ' ';
+    width: 66px;
+    height: 100px;
+    transform: translateZ(-12.5px);
+    background-color: #01060f;
+    border-radius: 0 2px 2px 0;
+    box-shadow: -10px 0 50px 10px #aaaaaa;
+  }
+
+
+
+  .ant-carousel .slick-dots li button{
+    background: #364d79 !important;
+  }
+  .ant-carousel .slick-dots li.slick-active button {
+    background: #364d79 !important;
   }
 }
