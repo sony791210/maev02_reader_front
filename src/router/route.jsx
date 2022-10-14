@@ -52,7 +52,7 @@ const RouteConfig = () => (
 
 
     <Route path="/importdata" exact component={importdata} />
-    <Route path="/importdata/:website/search" exact component={websiteSearch} />
+    <Route path="/importdata/:type/:website/search" exact component={websiteSearch} />
 
     
 
@@ -63,3 +63,4 @@ const RouteConfig = () => (
 
 
 export default RouteConfig
+

@@ -14,7 +14,7 @@ import  menuPng from '../images/menu.png';
 
 import zhsxs from "../images/zhsxs.png";
 import sto from "../images/sto.gif";
-
+import webmota from "../images/webmota.png"
 
 const { Header, Content,Footer } = Layout
 const { Search } = Input;
@@ -25,9 +25,7 @@ const AppComponent =(props)=> {
   const Menubar=(props)=>{
     return(
       <Menu>
-        <Menu.Item key="0">
-          <a href="#">哦豁阅读器</a>
-        </Menu.Item>
+
         <Menu.Item key="1">
           <Link to="/importdata">
             匯入小說
@@ -38,12 +36,10 @@ const AppComponent =(props)=> {
   }
 
 
-  const onSearch = (value,event, index) =>{
-    
+  const onSearch = (value,event, index,arrayList) =>{
 
-    console.log(value)
-
-    window.location.href=`/importdata/${NavelList[index].webName}/search?key=${value}`;
+    //arrayList in  NavelList || ComicList
+    window.location.href=`/importdata/${arrayList[index].type}/${arrayList[index].webName}/search?key=${value}`;
 
   } 
 
@@ -53,14 +49,26 @@ const AppComponent =(props)=> {
     {
       cover:zhsxs,
       title:"宙斯小說網",
-      webName:'zhsxs'
+      webName:'zhsxs',
+      type:"navel"
     },
     {
       cover:sto,
       title:"思兔",
-      webName:"sto"
+      webName:"sto",
+      type:"navel"
     }
   ];
+
+  const ComicList=[
+    {
+      cover:webmota,
+      title:"包子漫畫",
+      webName:'webmota',
+      type:"comic"
+    }
+  ];
+
 
   const deleteBook=()=>{
 
@@ -108,7 +116,7 @@ const AppComponent =(props)=> {
                     <BookItem data={item} deleteBook={deleteBook} key={index} />
                   </Col>
                   <Col xs={17} sm={14} md={12} lg={12} xl={12}>
-                    <Search placeholder="搜尋小說名稱" allowClear onSearch={ (event, value) => onSearch(event, value, index) } options={item.webName} />
+                    <Search placeholder="搜尋小說名稱" allowClear onSearch={ (event, value) => onSearch(event, value, index,NavelList) } options={item.webName} />
                   </Col>
                 </Row>
                 )
@@ -118,8 +126,21 @@ const AppComponent =(props)=> {
 
             <Row  key="comic" justify="center" align="middle" className={styles.rowComic}>
                   漫畫匯入
-            </Row> 
+            </Row>
 
+            {
+              ComicList.map(
+                  (item, index) =>
+                      <Row  key={index} align="middle" justify="center" className={styles.row}>
+                        <Col xs={5} sm={8} md={10} lg={10} xl={10}>
+                          <BookItem data={item} deleteBook={deleteBook} key={index} />
+                        </Col>
+                        <Col xs={17} sm={14} md={12} lg={12} xl={12}>
+                          <Search placeholder="搜尋漫畫名稱" allowClear onSearch={ (event, value) => onSearch(event, value, index,ComicList) } options={item.webName} />
+                        </Col>
+                      </Row>
+              )
+            }
             <Row  key="video" justify="center" align="middle" className={styles.rowVideo}>
                   影片匯入
             </Row> 

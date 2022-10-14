@@ -32,7 +32,7 @@ export const receiveBookList = (data, name) => {
 //搜索书籍
 export const getBookList = (name) => {
   return  dispatch => {
-    fetch(`/api/v1/book/search?query=${name}&start=0`)
+    fetch(`/api/v1/platform/search?query=${name}&start=0`)
       .then(res => res.json())
       .then(data => {
         // console.log(data)

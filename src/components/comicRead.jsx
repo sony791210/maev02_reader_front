@@ -74,7 +74,7 @@ const Read2 = (props) => {
     storejs.set('comicList', comicList);
 
     setTitle(data.title);
-    setImgContent(data.filePath)
+    setImgContent(data.filePath || [])
     setLoading(false);
     // setBookMenuList(comicList[pos]?.list)
 

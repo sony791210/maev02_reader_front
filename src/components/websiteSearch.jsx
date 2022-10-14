@@ -1,20 +1,18 @@
 import React from 'react'
-import {Layout, Menu, Dropdown, Spin,Row,Col,notification} from 'antd'
+import {Layout, Menu, Dropdown, Spin,Row,Col,notification,Image} from 'antd'
 import {SearchOutlined,DownSquareOutlined,HomeOutlined} from '@ant-design/icons';
 import { Link,useParams,useLocation } from 'react-router-dom'
-import BookItem from './bookItem'
+
 import styles from '../styles/main.module.less'
 import template from './template'
 import 'whatwg-fetch'
-import {introduce} from "../method/tool"
 
 import {http} from "../util/apiHelper";
 import  menuPng from '../images/menu.png';
 
 
-import zhszs from "../images/zhsxs.png";
-import sto from "../images/sto.gif";
-import _ from "lodash";
+
+import errorLoading from "../images/error.jpg";
 
 
 const { Header, Content,Footer } = Layout
@@ -31,6 +29,9 @@ const AppComponent =(props)=> {
   };
   let query = useQuery();
 
+  const handleImageErrored=(e)=> {
+    e.target.src = errorLoading;
+  }
 
 
   // const [searchParams, setSearchParams] = useSearchParams();
@@ -52,12 +53,12 @@ const AppComponent =(props)=> {
 
 
   const download=async (item)=>{
-
+    let type   = props.match.params.type
     let data={
       "website":props.match.params.website,
-      "navelId":item.navel_name_id
+      "id":item.navel_name_id
     };
-    await http.easyPost("/apiflask/v1/navel/download",data);
+    await http.easyPost(`/apiflask/v1/${type}/download`,data);
     notification["success"]({
       message: `下載中 ${item.title}` ,
       description:
@@ -68,9 +69,10 @@ const AppComponent =(props)=> {
 
   React.useEffect( async ()=>{
     let website = props.match.params.website;
+    let type   = props.match.params.type
     let keyword = query.get("key");
 
-    let {data}=await  http.easyGet(`/apiflask/v1/navel/search?website=${website}&keyword=${keyword}`)
+    let {data}=await  http.easyGet(`/apiflask/v1/${type}/search?website=${website}&keyword=${keyword}`)
     setBookSearch(data)
     setLsLoading(false)
   },[])
@@ -123,7 +125,16 @@ const AppComponent =(props)=> {
                       : bookSearch.map(
                           (item, index) =>
                               <Row key={index} align="middle" className={styles.row}>
-                                <Col xs={20} sm={20} md={20} lg={22} xl={22}>
+                                <Col xs={4} sm={4} md={4} lg={4} xl={4}>
+                                  <Image
+                                      width={50}
+                                      height={50}
+                                      src={item.img }
+                                      fallback={handleImageErrored}
+                                  />
+                                  {/*<img src={item.img } onError={handleImageErrored} />*/}
+                                </Col>
+                                <Col xs={16} sm={16} md={16} lg={18} xl={18}>
                                   <div className={styles.box}>
                                     <p>
                                       <span>{item.title}</span><br/>
