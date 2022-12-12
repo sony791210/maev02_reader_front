@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useContext }  from 'react'
 import {Layout, Menu, Dropdown, Spin,Row,Col,Button,Modal,Switch} from 'antd'
 import {SearchOutlined,QuestionCircleOutlined,HomeOutlined,MoreOutlined,DownloadOutlined,DeleteOutlined} from '@ant-design/icons';
 import { Link } from 'react-router-dom'
-import BookItem from './bookItem'
+import BookItem from './share/bookItem'
 import styles from '../styles/main.module.less'
 import template from './template'
 import 'whatwg-fetch'
@@ -13,11 +13,16 @@ import  menuPng from '../images/menu.png';
 import  morePng from '../images/more.png';
 import storejs from "store";
 
+import TopContext from "../context/TopContext";
+
 const { Header, Content,Footer } = Layout
 
 
 const AppComponent =(props)=> {
 
+
+  //使否開啟menu bar
+  const { loginInfo, setLoginInfo } = useContext(TopContext);
 
   const [isShowFooter,setIsShowFooter]=React.useState(false);
 
@@ -28,17 +33,28 @@ const AppComponent =(props)=> {
 
   const [isCheckeds,setIsCheckeds]= React.useState(props.bookList.list.map((e)=>e?.ManualPage));
 
+  //登入才能匯入資訊
   const Menubar=(props)=>{
     return(
       <Menu>
-        {/*<Menu.Item key="0">*/}
-        {/*  <a href="#">哦豁阅读器</a>*/}
-        {/*</Menu.Item>*/}
-        <Menu.Item key="1">
-          <Link to="/importdata">
-            匯入小說
-          </Link>
-        </Menu.Item>
+          {loginInfo.isLogin
+              ?
+              (
+                  <Menu.Item key="1">
+                    <Link to="/importdata">
+                      匯入資訊
+                    </Link>
+                  </Menu.Item>
+              )
+              :
+              (
+                  <Menu.Item key="0">
+                    <Link to="/login">
+                      登入
+                    </Link>
+                  </Menu.Item>
+              )
+          }
       </Menu>
     )
   }

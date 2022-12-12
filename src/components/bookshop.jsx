@@ -1,7 +1,7 @@
 import React from 'react';
 import {Layout, Image, Spin, Tag,Button,notification,Card, Col, Row,Divider} from 'antd';
 import { Link } from 'react-router-dom';
-import ResultBookItem from './resultBookItem';
+import ResultBookItem from './share/resultBookItem';
 import styles from '../styles/main.module.less'
 import template from './template';
 import storejs from 'store/dist/store.legacy';

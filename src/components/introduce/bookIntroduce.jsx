@@ -1,13 +1,13 @@
 import React from 'react';
 import {Layout, Spin, Button, Tag, message, Modal} from 'antd';
 import { Link } from 'react-router-dom';
-import template from './template';
-import styles from '../styles/bookIntroduce.module.less';
+import template from '../template';
+import styles from '../../styles/bookIntroduce.module.less';
 import randomcolor from 'randomcolor';
 
 import {HomeOutlined,ArrowLeftOutlined} from '@ant-design/icons';
 
-import  errorLoading from '../images/error.jpg'
+import  errorLoading from '../../images/error.jpg'
 
 const { Header, Content } = Layout
 
@@ -20,27 +20,20 @@ class BookIntroduce extends React.Component{
       loading: true,
       save: false
     };
-
-
     message.config({
       top: 500,
       duration: 2
     });
 
     this.flag = false; //是否进入阅读模式
-
-
-    this.props.getComickItem(this.props.match.params.id);
-
-
-
+    this.props.getBookItem(this.props.match.params.id);
     this.addBook = () => {
-      this.props.addComic(this.data);
+      this.props.addBook(this.data);
       message.info(`《${this.data.title}》加入书架`);
     }
 
     this.deleteBook = () => {
-      this.props.deleteComic(this.data);
+      this.props.deleteBook(this.data);
       message.info(`《${this.data.title}》从书架移除`);
     }
 
@@ -60,19 +53,15 @@ class BookIntroduce extends React.Component{
 
 
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps")
-
     console.log(nextProps)
     this.data = nextProps.fetchBookItem;
     this.share = `test`;
-
-    console.log(nextProps.fetchBookItem.comic_name_id)
-    this.setState({loading: false, save: nextProps.comicList.id.has(nextProps.fetchBookItem.comic_name_id)});
+    this.setState({loading: false, save: nextProps.bookList.id.has(nextProps.fetchBookItem.novel_name_id)});
     if (this.flag) {
-      let list = nextProps.comicList.list
+      let list = nextProps.bookList.list
       for (let index in list) {
-        if (list[index].comic_name_id === nextProps.fetchBookItem.comic_name_id) {
-          this.props.history.push({pathname: `/comicRead/${this.props.match.params.id}/1`});
+        if (list[index].novel_name_id === nextProps.fetchBookItem.novel_name_id) {
+          this.props.history.push({pathname: `/read/${this.props.match.params.id}/1`});
           this.flag = false;
           break;
         }
@@ -97,9 +86,7 @@ class BookIntroduce extends React.Component{
             </span>
 
             <span className={styles.home}>
-
                 <ArrowLeftOutlined onClick={()=>{history.back()}} />
-
             </span>
             
             <span className={styles.title}>書籍資訊</span>

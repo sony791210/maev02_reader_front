@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from '../styles/resultBookItem.module.less';
+import styles from '../../styles/resultBookItem.module.less';
 import { Link } from 'react-router-dom';
 
-import  errorLoading from '../images/error.jpg'
+import  errorLoading from '../../images/error.jpg'
 
-import {introduce} from "../method/tool"
+import {introduce} from "../../method/tool"
 
 const ResultBookItem=(props)=>{
 

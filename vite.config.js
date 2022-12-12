@@ -11,11 +11,12 @@ export default defineConfig({
       open: false,
       proxy: {
         '/apiflask':{
-              target: 'http://127.0.0.1:5000/',
+              target: 'https://navel.maev02.com/',
               changeOrigin: true
         },
         '/api': {
-            target: 'http://192.168.88.55:2000/',
+            // target: 'https://navel.maev02.com/',
+            target: 'http://127.0.0.1:2000/',
             changeOrigin: true,
             // rewrite: (path) => path.replace(/^\/api/, '/api')
         },

@@ -2,19 +2,19 @@ import React from 'react'
 import {Layout, Menu, Dropdown, Spin,Row,Col,Input} from 'antd'
 import {SearchOutlined,QuestionCircleOutlined,HomeOutlined,MoreOutlined,DownloadOutlined,DeleteOutlined} from '@ant-design/icons';
 import { Link,useHistory } from 'react-router-dom'
-import BookItem from './bookItem'
-import styles from '../styles/main.module.less'
-import template from './template'
+import BookItem from '../share/bookItem'
+import styles from '../../styles/main.module.less'
+import template from '../template'
 import 'whatwg-fetch'
 
-import {introduce} from "../method/tool"
+import {introduce} from "../../method/tool"
 
-import  menuPng from '../images/menu.png';
+import  menuPng from '../../images/menu.png';
 
 
-import zhsxs from "../images/zhsxs.png";
-import sto from "../images/sto.gif";
-import webmota from "../images/webmota.png"
+import zhsxs from "../../images/zhsxs.png";
+import sto from "../../images/sto.gif";
+import webmota from "../../images/webmota.png"
 
 const { Header, Content,Footer } = Layout
 const { Search } = Input;

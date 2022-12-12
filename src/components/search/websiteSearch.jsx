@@ -3,16 +3,16 @@ import {Layout, Menu, Dropdown, Spin,Row,Col,notification,Image} from 'antd'
 import {SearchOutlined,DownSquareOutlined,HomeOutlined} from '@ant-design/icons';
 import { Link,useParams,useLocation } from 'react-router-dom'
 
-import styles from '../styles/main.module.less'
-import template from './template'
+import styles from '../../styles/main.module.less'
+import template from '../template'
 import 'whatwg-fetch'
 
-import {http} from "../util/apiHelper";
-import  menuPng from '../images/menu.png';
+import {http} from "../../util/apiHelper";
+import  menuPng from '../../images/menu.png';
 
 
 
-import errorLoading from "../images/error.jpg";
+import errorLoading from "../../images/error.jpg";
 
 
 const { Header, Content,Footer } = Layout
@@ -53,10 +53,11 @@ const AppComponent =(props)=> {
 
 
   const download=async (item)=>{
+    console.log(item)
     let type   = props.match.params.type
     let data={
       "website":props.match.params.website,
-      "id":item.navel_name_id
+      "id":   item.navel_name_id || item.comic_name_id
     };
     await http.easyPost(`/apiflask/v1/${type}/download`,data);
     notification["success"]({

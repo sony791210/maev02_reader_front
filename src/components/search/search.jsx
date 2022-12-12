@@ -1,9 +1,9 @@
 import React from 'react';
 import {Layout, Input, Spin, Tag,Button,notification} from 'antd';
 import { Link } from 'react-router-dom';
-import ResultBookItem from './resultBookItem';
-import styles from '../styles/search.module.less';
-import template from './template';
+import ResultBookItem from '../share/resultBookItem';
+import styles from '../../styles/search.module.less';
+import template from '../template';
 import storejs from 'store/dist/store.legacy';
 import randomcolor from 'randomcolor';
 import {HomeOutlined,SearchOutlined,CloseCircleOutlined,DeleteOutlined} from '@ant-design/icons';

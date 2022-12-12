@@ -43,9 +43,9 @@ const Menu=(props)=>{
   
   //第一次登入
   React.useEffect(async () => {
-    let novelId=props.novelId;
+    let novelId=props.id;
     let data=await getFetch(novelId);
-    setBookList(data);
+    setBookList(data || []);
 
     //每個欄位約46.14 開頭有20的間距
     document.getElementsByClassName('ant-modal-body')[0].scrollTo({top:20+46.14*(parseInt(props.novelPage, 10)-1)})

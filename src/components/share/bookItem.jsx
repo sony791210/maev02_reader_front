@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from '../styles/bookItem.module.less';
+import styles from '../../styles/bookItem.module.less';
 import Tappable from 'react-tappable/lib/Tappable';
 import {Modal} from 'antd';
 
 const confirm = Modal.confirm;
 
-import  errorLoading from '../images/error.jpg'
+import  errorLoading from '../../images/error.jpg'
 import _ from "lodash";
 
 

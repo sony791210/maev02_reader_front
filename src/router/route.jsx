@@ -6,21 +6,23 @@ import {
 } from 'react-router-dom';
 
 import index from '../components/Main';
-import search from '../components/search';
-import bookIntroduce  from '../components/bookIntroduce';
-import comicIntroduce from '../components/comicIntroduce';
+import search from '../components/search/search';
+import bookIntroduce  from '../components/introduce/bookIntroduce';
+import comicIntroduce from '../components/introduce/comicIntroduce';
 // import about from '../components/about';
-import read from '../components/read';
-import readByPage from '../components/readByPage';
+import read from '../components/read/read';
+import readByPage from '../components/read/readByPage';
 
-import comicRead from '../components/comicRead'
-import videoRead from '../components/videoRead'
+import comicRead from '../components/read/comicRead'
+import videoRead from '../components/read/videoRead'
 
 import bookshop from '../components/bookshop';
 
 
-import importdata    from '../components/importdata';
-import websiteSearch from '../components/websiteSearch';
+import importdata    from '../components/search/importdata';
+import websiteSearch from '../components/search/websiteSearch';
+
+import login from '../components/login/login';
 
 // import changeOrigin from '../components/changeOrigin';
 
@@ -54,7 +56,7 @@ const RouteConfig = () => (
     <Route path="/importdata" exact component={importdata} />
     <Route path="/importdata/:type/:website/search" exact component={websiteSearch} />
 
-    
+      <Route path="/login" exact component={login} />
 
 
   </Switch>

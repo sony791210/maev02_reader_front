@@ -2,11 +2,11 @@ import React from 'react';
 import { Link, useHistory } from 'react-router-dom'
 import { Layout, Spin, message, Modal, Row, Col,Select } from 'antd';
 import { LeftOutlined, RightOutlined, CloudDownloadOutlined, MenuOutlined, SettingOutlined, PlusOutlined, MinusOutlined, HomeOutlined } from '@ant-design/icons';
-import Menu from './menu'
+import Menu from '../menu'
 
-import styles from '../styles/read.module.less';
+import styles from '../../styles/read.module.less';
 
-import template from './template';
+import template from '../template';
 import 'whatwg-fetch';
 import storejs from 'store/dist/store.legacy';
 
@@ -243,7 +243,7 @@ return (
 
         >
           {
-            <Menu novelId={novelId} novelPage={novelPage} bookMenuList={bookMenuList} setNovelPage={setNovelPage} setChapterListShow={setChapterListShow} />
+            <Menu id={novelId} novelPage={novelPage} bookMenuList={bookMenuList} setNovelPage={setNovelPage} setChapterListShow={setChapterListShow} />
           }
         </Modal>
         {

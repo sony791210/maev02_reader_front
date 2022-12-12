@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link, useHistory } from 'react-router-dom'
 import { Layout, Spin, message, Modal, Row, Col,Select,Image } from 'antd';
 import { LeftOutlined, RightOutlined, CloudDownloadOutlined, MenuOutlined, SettingOutlined, PlusOutlined, MinusOutlined, HomeOutlined } from '@ant-design/icons';
-import Menu from './menu'
+import Menu from '../menu'
 
-import styles from '../styles/read.module.less';
+import styles from '../../styles/read.module.less';
 
-import template from './template';
+import template from '../template';
 import 'whatwg-fetch';
 import storejs from 'store/dist/store.legacy';
 
 import _ from "lodash";
 
 
+import { Player } from "video-react";
+import "video-react/dist/video-react.css"; // import css
 const { Header, Footer } = Layout;
 
 
@@ -21,13 +23,17 @@ const { Option } = Select;
 
 const Read2 = (props) => {
 
-
   const reactHistory = useHistory();
 
   const [content, setContent] = React.useState(null);
 
 
   const [imgContent, setImgContent] = React.useState([]);
+
+
+  const [videoContent, setVideoContent] = React.useState("");
+
+
   const [title, setTitle] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [chapterListShow, setChapterListShow] = React.useState(false);
@@ -53,30 +59,30 @@ const Read2 = (props) => {
 
     setLoading(true);
 
-    var pos = _.findIndex(storejs.get('comicList'), { comic_name_id: id })
+    // var pos = _.findIndex(storejs.get('comicList'), { comic_name_id: id })
+    // console.log(pos)
 
+    // console.log(storejs.get('comicList'))
+    // let chapters = storejs.get('comicList')[pos]?.list;
 
-
-    let chapters = storejs.get('comicList')[pos]?.list;
-
-
+    // console.log(chapters)
     
 
-    //抓資料
-    let data = await getFetch(id, page);
-    //存擋及show資料
+    // //抓資料
+    // let data = await getFetch(id, page);
+    // //存擋及show資料
 
-    let comicList = storejs.get('comicList');
-    comicList[pos].readIndex =parseInt(page) ;
-    comicList[pos].page = parseInt(page);
+    // let comicList = storejs.get('comicList');
+    // comicList[pos].readIndex =parseInt(page) ;
+    // comicList[pos].page = parseInt(page);
 
-    _.set(comicList, [pos, 'list', page], data)
-    storejs.set('comicList', comicList);
+    // _.set(comicList, [pos, 'list', page], data)
+    // storejs.set('comicList', comicList);
 
-    setTitle(data.title);
-    setImgContent(data.filePath || [])
-    setLoading(false);
-    // setBookMenuList(comicList[pos]?.list)
+    // setTitle(data.title);
+    // setImgContent(data.filePath)
+    // setLoading(false);
+    
 
 
 
@@ -89,7 +95,7 @@ const Read2 = (props) => {
     return fetch(`/api/v1/comic/${id}/${page}`)
       .then(res => res.json())
       .then(res => {
-
+        console.log(res)
         if (!res?.data) {
           message.info('沒有此章節了');
           setLoading(false);
@@ -110,10 +116,10 @@ const Read2 = (props) => {
 
   //改變位置
   const setReadScroll = () => {
-    // let comicList = storejs.get('comicList');
-    // let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
-    // comicList[pos].readScroll = boxRef.current.scrollTop;
-    // storejs.set('comicList', comicList);
+    let comicList = storejs.get('comicList');
+    let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
+    comicList[pos].readScroll = boxRef.current.scrollTop;
+    storejs.set('comicList', comicList);
   }
 
 
@@ -124,20 +130,18 @@ const Read2 = (props) => {
   //換頁
   React.useEffect(() => {
 
+    // console.log(isFirstRender)
+    // //  設定第二次再渲染
+    // if (isFirstRender) return;
 
-    //  設定第二次再渲染
-    if (isFirstRender) return;
-
-    setShow(false);
-    let comicList = storejs.get('comicList');
-
-
-    let pos = _.findIndex(comicList, { comic_name_id: novelId })
+    // setShow(false);
+    // let comicList = storejs.get('comicList');
+    // let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
     // comicList[pos].readScroll = 0;
-    comicList[pos].page = props.match.params.page;
+    // comicList[pos].page = props.match.params.page;
 
-    storejs.set('comicList', comicList);
-    getChapter(novelId, novelPage);
+    // storejs.set('comicList', comicList);
+    // getChapter(novelId, novelPage);
 
 
 
@@ -147,22 +151,21 @@ const Read2 = (props) => {
   //第一次登入
   React.useEffect(() => {
     let id = props.match.params.id;
-
-    id=decodeURI(id)
     let page = props.match.params.page || 1;
-    getChapter(id, page);
-    //取消是否第一次渲染
-    setIsFirstRender(false);
+    setVideoContent('/static/uiu-1.mp4')
+    // getChapter(id, page);
+    // //取消是否第一次渲染
+    // setIsFirstRender(false);
   }, []);
 
 
   //改變內容
   React.useEffect(() => {
-    let comicList = storejs.get('comicList');
+    // let comicList = storejs.get('comicList');
+    // console.log()
+    // let pos = _.findIndex(comicList, { comic_name_id: parseInt(novelId) })
 
-    let pos = _.findIndex(comicList, { comic_name_id: novelId })
-
-    boxRef.current.scrollTop = _.has(comicList[pos], 'readScroll') ? comicList[pos].readScroll : 0;
+    // boxRef.current.scrollTop = _.has(comicList[pos], 'readScroll') ? comicList[pos].readScroll : 0;
 
 
   }, [content]);
@@ -181,26 +184,22 @@ const Read2 = (props) => {
     reactHistory.push(`${parseInt(novelPage) + 1}`)
   }
 
-  history.pushState(null, null, document.URL);
+  // history.pushState(null, null, document.URL);
 
-  window.addEventListener('popstate', function (e) {
-    history.pushState(null, null, document.URL);
-  }, false);
-
-
+  // window.addEventListener('popstate', function (e) {
+  //   history.pushState(null, null, document.URL);
+  // }, false);
 
 
-  const imageShow=()=>{
-    let img=imgContent.map((ele,index)=>{
-
-        if(ele.match(/(gif|png|jpg|jpeg)$/)){
-          return <Image  key={index} src={ele} preview={false}></Image>
-        }
 
 
-    })
+  const videoShow=()=>{
+   
+    return <Player>
+            <source  src={videoContent}  />
+          </Player>
+    
 
-    return img
   }
 
 
@@ -249,7 +248,7 @@ return (
               <div>
 
 
-                {imageShow()}
+                {videoShow()}
                 
                
 
